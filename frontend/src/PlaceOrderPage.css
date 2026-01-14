@@ -1,0 +1,195 @@
+.place-order-container {
+  padding: 2rem 0;
+}
+
+.place-order-container h1 {
+  font-weight: 600;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.place-order-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 cột trên mobile */
+  gap: 2rem;
+}
+
+/* 2 cột trên desktop */
+@media (min-width: 992px) {
+  .place-order-grid {
+    grid-template-columns: 2.5fr 1fr; /* Cột trái (Info) 70%, Cột phải (Summary) 30% */
+  }
+}
+
+/* Cột trái: Chứa các thông tin */
+.place-order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Các hộp thông tin (Địa chỉ, PTTT, Sản phẩm) */
+.info-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.info-box h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-box p {
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+.info-box p strong {
+  color: #333;
+}
+
+/* Danh sách sản phẩm trong hộp "Sản phẩm đặt mua" */
+.order-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 400px; /* Giới hạn chiều cao, cho phép cuộn */
+  overflow-y: auto;
+  padding-right: 0.5rem; /* Thêm padding cho thanh cuộn */
+}
+
+.order-item {
+  display: grid;
+  grid-template-columns: 60px 1fr 150px; /* 3 cột: Ảnh, Tên, Tóm tắt giá */
+  gap: 1rem;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+.order-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.order-item-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.order-item-name a {
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+}
+.order-item-name a:hover {
+  color: #ff6600;
+}
+
+.order-item-summary {
+  font-size: 0.95rem;
+  text-align: right;
+  color: #555;
+}
+.order-item-summary strong {
+  color: #000;
+}
+
+/* Cột phải: Tóm tắt đơn hàng */
+.place-order-summary .summary-box {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  padding: 1.5rem;
+  position: sticky; /* Dính lại khi cuộn */
+  top: 100px;
+}
+
+/* (Các class .summary-box h2, .summary-row, .total-price... dùng chung CSS với CartPage.css) */
+/* Chúng ta có thể copy lại để đảm bảo nó hoạt động độc lập */
+.place-order-summary .summary-box h2 {
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+.place-order-summary .summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+.place-order-summary .summary-row.total-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ff6600;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+.place-order-summary .checkout-btn {
+  width: 100%;
+  padding: 1rem;
+  background: #ff6600;
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+}
+.place-order-summary .checkout-btn:hover {
+  background: #e65c00;
+}
+.place-order-summary .checkout-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* (Các class .form-error, .qr-code-section... dùng chung CSS với PaymentPage.css) */
+.place-order-summary .form-error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+.place-order-summary .qr-code-section {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #ffcc99;
+  background-color: #fff9f2;
+  border-radius: 6px;
+  text-align: center;
+}
+.place-order-summary .qr-code-image {
+  max-width: 200px;
+  height: auto;
+  margin: 0.5rem auto;
+}
+.place-order-summary .qr-instruction {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.place-order-summary .qr-memo {
+  font-family: monospace;
+  background-color: #e9ecef;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  color: #000;
+}
+.place-order-summary .payment-note {
+  font-size: 0.9em;
+  color: #555;
+  font-style: italic;
+  text-align: center;
+  margin-top: 1rem;
+}

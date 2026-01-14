@@ -1,0 +1,248 @@
+.product-page-container {
+  padding: 2rem 0;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  background: #f4f4f4;
+  color: #333;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+}
+.back-btn:hover {
+  background: #ddd;
+}
+
+.product-details-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 cột trên mobile */
+  gap: 2rem;
+}
+
+/* Responsive cho màn hình lớn hơn */
+@media (min-width: 768px) {
+  .product-details-grid {
+    /* Layout 3 cột: Ảnh | Thông tin | Hộp Mua Hàng */
+    grid-template-columns: 2fr 1.5fr 1fr;
+  }
+}
+
+.product-image-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.product-info-container {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+@media (min-width: 768px) {
+  .product-info-container {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.product-info-container h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.product-price-large {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff6600;
+  margin-bottom: 1rem;
+}
+
+.product-status {
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.product-description {
+  line-height: 1.6;
+}
+
+.product-action-container .action-box {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  /* Làm cho hộp này "dính" lại khi cuộn */
+  position: sticky;
+  top: 100px;
+}
+
+.action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+.action-row:last-child {
+  border-bottom: none;
+}
+.action-row label {
+  font-weight: 500;
+}
+.action-row select {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  padding: 1rem;
+  background: #ff6600;
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 0 0 8px 8px; /* Bo góc dưới */
+}
+.add-to-cart-btn:hover {
+  background: #e65c00;
+}
+.add-to-cart-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.add-to-cart-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* --- THÊM MỚI: CSS CHO PHẦN RATING VÀ REVIEW --- */
+
+/* 1. Component Rating (Các ngôi sao) */
+.rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.rating i {
+  /* Các icon sao (fas, far) */
+  color: #f8e825; /* Màu vàng */
+  margin-right: 2px;
+}
+.rating-text {
+  font-size: 0.9rem;
+  color: #777;
+  margin-left: 0.5rem;
+}
+
+/* 2. Style cho "Đã bán" */
+.product-sold {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 1rem;
+  margin-top: -0.5rem; /* Kéo lên gần status */
+}
+
+/* 3. Container chung cho 2 cột review */
+.product-reviews-container {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+  display: grid;
+  grid-template-columns: 1fr; /* 1 cột trên mobile */
+  gap: 2.5rem;
+}
+
+/* Chia 2 cột trên desktop */
+@media (min-width: 992px) {
+  .product-reviews-container {
+    grid-template-columns: 1fr 1fr; /* 2 cột bằng nhau */
+  }
+}
+
+.review-list-section h2,
+.review-form-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+/* 4. Cột Trái: Danh sách Reviews */
+.review-message {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  color: #555;
+  text-align: center;
+}
+.review-message a {
+  /* Cho link "Đăng nhập" */
+  color: #ff6600;
+  font-weight: 600;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Khoảng cách giữa các review */
+}
+
+.review-item {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+.review-item:last-child {
+  border-bottom: none;
+}
+.review-item strong {
+  font-weight: 600;
+  color: #333;
+}
+.review-item .rating {
+  /* Ghi đè margin cho sao trong list */
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+.review-date {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+.review-item p {
+  line-height: 1.6; /* Giãn dòng cho comment */
+}
+
+/* 5. Cột Phải: Form Viết Review */
+/* (Tận dụng .form-group và .form-btn từ file Form.css) */
+/* Thêm style cho select và textarea */
+.review-select,
+.review-textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit; /* Đảm bảo dùng font chữ chung */
+  background: #fff;
+}
+.review-select:focus,
+.review-textarea:focus {
+  border-color: #ff6600;
+  outline: none;
+}
+
+.review-textarea {
+  resize: vertical; /* Chỉ cho phép kéo dãn chiều dọc */
+  min-height: 100px;
+}
+
+/* --- KẾT THÚC THÊM MỚI --- */

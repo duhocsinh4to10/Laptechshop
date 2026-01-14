@@ -1,0 +1,220 @@
+.admin-form-container {
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 25px;
+  text-decoration: none;
+  color: #666;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.btn-back:hover {
+  color: #ff6600; /* Màu cam khi hover */
+}
+
+.form-box {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  border-top: 5px solid #ff6600; /* Điểm nhấn màu cam */
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.form-header h1 {
+  margin: 0;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.product-id-badge {
+  background: #fff3e0; /* Nền cam nhạt */
+  color: #ff6600; /* Chữ cam */
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-family: monospace;
+  border: 1px solid #ffe0b2;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-row {
+  display: flex;
+  gap: 30px;
+}
+.form-row .form-group {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: #fdfdfd;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #ff6600; /* Viền cam khi focus */
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.15); /* Shadow cam */
+  background-color: #fff;
+}
+
+.img-preview {
+  margin-top: 15px;
+  max-width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fafafa;
+}
+
+/* --- Toggle Switch CSS (Orange Theme) --- */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff3e0; /* Nền cam rất nhạt */
+  border: 1px solid #ffe0b2;
+  border-radius: 8px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider {
+  background-color: #ff6600; /* Nền cam khi bật */
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.switch-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+/* -------------------- */
+
+.btn-submit {
+  width: 100%;
+  padding: 15px;
+  background-color: #ff6600; /* Nút cam */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-top: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-submit:hover {
+  background-color: #e65c00; /* Cam đậm hơn */
+}
+
+.btn-submit:active {
+  transform: translateY(1px);
+}
+
+.btn-submit:disabled {
+  background-color: #ffcc99;
+  cursor: not-allowed;
+}
+
+.message-error {
+  background-color: #ffe6e6;
+  color: #d63031;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #fab1a0;
+  font-weight: 500;
+}
+
+.loading-text {
+  text-align: center;
+  margin-top: 100px;
+  color: #666;
+  font-size: 1.2rem;
+}

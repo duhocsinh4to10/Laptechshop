@@ -1,0 +1,34 @@
+.footer-container {
+  background-color: #f8f9fa; /* Nền xám rất nhạt, giống ảnh */
+  color: #495057; /* Màu chữ xám đậm */
+  padding: 2.5rem 0; /* Khoảng cách trên/dưới */
+  margin-top: 3rem; /* Khoảng cách với nội dung chính bên trên */
+  border-top: 1px solid #e7e7e7; /* Viền trên mờ */
+  font-size: 0.9rem; /* Chữ nhỏ hơn */
+  line-height: 1.7; /* Giãn dòng */
+}
+
+.footer-content {
+  /* Class 'container' đã tự động căn giữa và giới hạn chiều rộng */
+  /* Chúng ta có thể để text căn trái (default) hoặc căn giữa */
+  /* text-align: center; */ /* Bỏ comment nếu bạn muốn căn giữa */
+}
+
+.footer-content p {
+  margin-bottom: 0.5rem; /* Khoảng cách nhỏ giữa các dòng */
+}
+
+.footer-content strong {
+  font-weight: 600; /* Chữ đậm cho tiêu đề (Địa chỉ, Hotline) */
+  color: #333;
+}
+
+/* Dòng Copyright ở cuối */
+.footer-copyright {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e7e7e7; /* Đường kẻ ngang mỏng */
+  font-size: 0.85rem; /* Chữ nhỏ hơn nữa */
+  color: #777;
+  text-align: center; /* Căn giữa dòng copyright */
+}

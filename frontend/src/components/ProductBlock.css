@@ -1,0 +1,59 @@
+.product-block-container {
+  margin-bottom: 3rem;
+  background-color: #fff;
+  padding: 20px 30px; /* Tăng padding ngang để chứa mũi tên */
+  border-radius: 12px;
+  position: relative; /* Để mũi tên định vị tương đối với block này */
+}
+
+.product-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #ff6600;
+  padding-bottom: 10px;
+}
+
+.product-block-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Xóa CSS Grid cũ vì giờ dùng Swiper */
+/* .product-block-grid { ... } */
+
+/* --- CSS CHO SWIPER --- */
+.product-block-slider {
+  padding-bottom: 20px; /* Chừa chỗ cho shadow hoặc pagination */
+}
+
+/* Tùy chỉnh mũi tên điều hướng */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ff6600 !important; /* Đổi màu mũi tên thành cam */
+  background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mờ */
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 1.2rem !important; /* Kích thước mũi tên */
+  font-weight: bold;
+}
+
+/* Đảm bảo các slide có chiều cao bằng nhau */
+.swiper-slide {
+  height: auto !important; /* Để flexbox của ProductCard hoạt động */
+  display: flex;
+}
+
+.swiper-slide > div {
+  width: 100%; /* ProductCard chiếm hết chiều rộng slide */
+}

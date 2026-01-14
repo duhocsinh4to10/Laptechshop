@@ -1,0 +1,113 @@
+/* frontend/src/pages/Form.css */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 450px;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-wrapper h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-btn {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  background-color: #ff6600;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.form-btn:hover {
+  background-color: #e65c00;
+}
+
+.form-redirect {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.form-redirect a {
+  color: #ff6600;
+  font-weight: 600;
+  text-decoration: none;
+}
+.form-redirect a:hover {
+  text-decoration: underline;
+}
+
+.form-error {
+  color: #d9534f;
+  background: #f2dede;
+  border: 1px solid #ebccd1;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.form-redirect a:hover {
+  text-decoration: underline;
+}
+
+.form-redirect a:hover {
+  text-decoration: underline;
+}
+
+.form-error {
+  /* ... (code cũ) ... */
+}
+
+/* --- SỬA CSS CHO NÚT GỬI LẠI (LÀM RÕ HƠN) --- */
+.resend-btn {
+  background: #ffffff; /* Nền trắng */
+  border: 1px solid #ff6600; /* Viền màu cam */
+  color: #ff6600; /* Chữ màu cam */
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem; /* Thêm padding cho giống button */
+  font-size: 0.9rem; /* Cỡ chữ nhỏ hơn một chút */
+  font-family: inherit; /* Kế thừa font chữ */
+  border-radius: 4px; /* Bo góc */
+  transition: all 0.2s ease; /* Hiệu ứng hover */
+}
+
+.resend-btn:hover {
+  background: #fff8f5; /* Nền cam rất nhạt khi hover */
+  text-decoration: none; /* Bỏ gạch chân khi hover */
+}

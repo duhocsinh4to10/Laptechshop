@@ -1,0 +1,299 @@
+/* ... (Giữ nguyên các style cũ của bạn) ... */
+
+/* --- Container chung --- */
+.my-orders-page {
+  padding: 2rem 0;
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.page-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+.page-header p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+/* --- FILTER TABS (MỚI) --- */
+.filter-tabs-container {
+  overflow-x: auto; /* Cho phép cuộn ngang trên mobile */
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1.5rem;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 2rem;
+  min-width: max-content; /* Đảm bảo không bị co lại quá nhỏ */
+}
+
+.filter-tab {
+  background: none;
+  border: none;
+  padding: 1rem 0;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.filter-tab:hover {
+  color: #ff6600;
+}
+
+.filter-tab.active {
+  color: #ff6600; /* Màu cam chủ đạo */
+  font-weight: 600;
+  border-bottom-color: #ff6600;
+}
+
+/* --- Search Bar --- */
+.order-search-bar {
+  position: relative;
+  margin-bottom: 2rem;
+}
+.order-search-bar input {
+  width: 100%;
+  padding: 12px 12px 12px 45px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: #f9f9f9;
+}
+.order-search-bar .search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+/* ... (Các phần style card, modal, button cũ giữ nguyên hoặc copy lại từ file cũ nếu cần) ... */
+/* Tôi sẽ thêm lại một số style cơ bản để đảm bảo giao diện không vỡ nếu bạn copy đè */
+
+.orders-list-container {
+  min-height: 200px;
+}
+
+.order-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.order-card-header {
+  padding: 1rem 1.5rem;
+  background-color: #fcfcfc;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.order-id .label {
+  color: #888;
+  margin-right: 5px;
+}
+.order-id .value {
+  font-weight: 600;
+  font-family: monospace;
+}
+
+/* Status Colors (Tailwind-like custom classes) */
+.bg-yellow-100 {
+  background-color: #fef9c3;
+  color: #a16207;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.bg-blue-100 {
+  background-color: #dbeafe;
+  color: #1e40af;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.bg-purple-100 {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.bg-green-100 {
+  background-color: #dcfce7;
+  color: #15803d;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.bg-red-100 {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.bg-gray-100 {
+  background-color: #f3f4f6;
+  color: #374151;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.order-card-body {
+  padding: 1.5rem;
+}
+.item-preview {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+.item-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+.item-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+.item-info .more-items {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.order-card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.order-total span {
+  color: #666;
+  margin-right: 10px;
+}
+.order-total strong {
+  color: #ff6600;
+  font-size: 1.2rem;
+}
+
+.btn-detail {
+  padding: 0.5rem 1rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.btn-detail:hover {
+  border-color: #999;
+  color: #333;
+}
+
+.btn-cancel {
+  padding: 0.5rem 1rem;
+  background: #fff;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-cancel:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-rebuy {
+  background: #ff6600;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Modal styles (cơ bản) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+}
+.modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-body {
+  padding: 20px;
+}
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #eee;
+}
+.detail-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+}
+.detail-summary .summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.detail-summary .total {
+  font-weight: bold;
+  color: #ff6600;
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
