@@ -1,155 +1,111 @@
-import Product from "../models/Product.model.js"; // <-- 1. IMPORT PRODUCT MODEL
+import Product from "../models/Product.model.js";
 
-// @desc    Xử lý tin nhắn chat với Gemini AI
-// @route   POST /api/chat
-// @access  Public
+// --- PROMPT 1: Dùng để sinh ra MongoDB Query Object ---
+const SCHEMA_DESCRIPTION = `
+Bạn là một AI chuyển đổi ngôn ngữ tự nhiên thành câu truy vấn MongoDB (Mongoose).
+Dưới đây là thông tin Schema của bảng 'products':
+- name (String): Tên sản phẩm.
+- description (String): Mô tả cấu hình.
+- brand (String): Thương hiệu.
+- category (String): Loại sản phẩm.
+- price (Number): Giá sản phẩm (VNĐ).
+- countInStock (Number): Số lượng tồn kho.
 
-// System Prompt: Định nghĩa vai trò và kiến thức cho AI
-const systemPrompt = `
-Bạn là một trợ lý AI của LapTechShop, một cửa hàng bán lẻ laptop, desktop, và các thiết bị công nghệ.
-Tên của bạn là "LapTech Assistant".
-Hãy trả lời các câu hỏi của khách hàng một cách thân thiện, chuyên nghiệp, và hữu ích.
-
-HÃY TUÂN THỦ CÁC QUY TẮC SAU:
-1.  **Chuyên môn:** Chỉ trả lời các câu hỏi liên quan đến sản phẩm công nghệ (laptop, desktop, màn hình, v.v.), chính sách của LapTechShop (bảo hành, vận chuyển), hoặc so sánh sản phẩm.
-2.  **Từ chối:** Nếu được hỏi về các chủ đề không liên quan (ví dụ: nấu ăn, chính trị, thời tiết), hãy lịch sự từ chối và lái cuộc trò chuyện trở lại chủ đề công nghệ.
-3.  **CHỈ DÙNG DỮ LIỆU CUNG CẤP (RAG):** Bạn PHẢI trả lời dựa trên "Context sản phẩm từ database" được cung cấp kèm theo câu hỏi. Đây là dữ liệu sản phẩm thực tế của LapTechShop.
-4.  **Không bịa đặt (SỬA ĐỔI):** Nếu "Context" (thông tin từ database) rỗng hoặc không có sản phẩm khớp, hãy trả lời một cách tự nhiên rằng bạn không tìm thấy sản phẩm đó tại LapTechShop và gợi ý họ thử tìm kiếm với từ khóa khác hoặc tham khảo các sản phẩm khác. 
-    **QUAN TRỌNG: KHÔNG ĐƯỢC PHÉP dùng câu "Tôi đã kiểm tra trong cơ sở dữ liệu...".**
-5.  **Ngắn gọn:** Giữ câu trả lời súc tích.
-6.  **Ngôn ngữ:** Luôn trả lời bằng tiếng Việt.
+YÊU CẦU: Chỉ trả về duy nhất chuỗi JSON hợp lệ. Không giải thích.
 `;
 
-const chatWithAI = async (req, res) => {
-  const { prompt } = req.body; // Lấy câu hỏi (prompt) từ người dùng
+const callGemini = async (prompt) => {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error("Chưa cấu hình GEMINI_API_KEY");
 
-  if (!prompt) {
-    return res.status(400).json({ message: "Vui lòng cung cấp câu hỏi." });
-  }
+  // Sử dụng gemini-1.5-flash hoặc gemini-2.0-flash-exp (ổn định hơn v2.5)
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+  const payload = {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { temperature: 0.1 }, // Để thấp để kết quả query chính xác hơn
+  };
+
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await response.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+};
+
+const chatWithAI = async (req, res) => {
+  const { prompt, history = [] } = req.body;
+  if (!prompt) return res.status(400).json({ message: "Vui lòng cung cấp câu hỏi." });
 
   try {
-    // --- 2. (RAG) SỬA LẠI LOGIC TRUY VẤN SẢN PHẨM ---
-    let contextText = "";
+    // --- BƯỚC 1: LẤY MONGODB QUERY ---
+    const queryPrompt = `${SCHEMA_DESCRIPTION}\n\nCâu hỏi người dùng: "${prompt}"`;
+    let rawQuery = await callGemini(queryPrompt);
+    rawQuery = rawQuery.replace(/```json/g, "").replace(/```/g, "").trim();
+
+    let dbResults = [];
+    let isGeneralChat = false;
+
+    // --- BƯỚC 2: THỰC THI QUERY ---
     try {
-      // 1. Tách prompt thành các từ khóa
-      const keywords = prompt
-        .split(" ")
-        .map((word) => word.trim().toLowerCase()) // Chuyển về chữ thường
-        .filter((word) => word.length > 2); // Lọc các từ ngắn
-
-      if (keywords.length === 0 && prompt.length > 0) {
-        keywords.push(prompt.toLowerCase());
-      }
-
-      // --- SỬA LỖI Ở ĐÂY: Thêm trường 'brand' vào $or ---
-      // 2. Tạo mảng các điều kiện regex cho MỖI TỪ KHÓA
-      const regexConditions = keywords.map((key) => ({
-        // Mỗi từ khóa phải xuất hiện trong 1 trong 4 trường này
-        $or: [
-          { name: { $regex: key, $options: "i" } },
-          { description: { $regex: key, $options: "i" } },
-          { category: { $regex: key, $options: "i" } },
-          { brand: { $regex: key, $options: "i" } }, // <-- THÊM DÒNG NÀY
-        ],
-      }));
-      // --- KẾT THÚC SỬA ---
-
-      // 3. Tạo query: Sản phẩm phải khớp VỚI TẤT CẢ ($and) các từ khóa
-      const query = regexConditions.length > 0 ? { $and: regexConditions } : {};
-
-      console.log("Đang tìm kiếm DB với query:", JSON.stringify(query)); // Debug query
-
-      const relevantProducts = await Product.find(query).limit(5); // Lấy 5 sản phẩm
-
-      // --- KẾT THÚC SỬA LOGIC TRUY VẤN ---
-
-      if (relevantProducts.length > 0) {
-        // Chuyển danh sách sản phẩm thành text để AI đọc
-        contextText =
-          "Dưới đây là thông tin các sản phẩm liên quan từ database của LapTechShop:\n\n" +
-          relevantProducts
-            .map(
-              (p) =>
-                // Thêm Brand vào context cho AI
-                `Sản phẩm: ${p.name}\nHãng: ${
-                  p.brand
-                }\nGiá: ${p.price.toLocaleString("vi-VN")} ₫\nDanh mục: ${
-                  p.category
-                }\nMô tả ngắn: ${p.description}\n`
-            )
-            .join("\n---\n");
-      } else {
-        contextText =
-          "Không có sản phẩm nào trong database của LapTechShop khớp với truy vấn của người dùng.";
-      }
-    } catch (dbError) {
-      console.error("Lỗi khi tìm kiếm sản phẩm trong DB:", dbError);
-      contextText = "Đã xảy ra lỗi khi tra cứu cơ sở dữ liệu sản phẩm.";
-    }
-    // --- KẾT THÚC RAG ---
-
-    // Lấy API Key từ file .env
-    const apiKey = process.env.GEMINI_API_KEY;
-
-    // Đảm bảo URL là đúng
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-    // --- 3. SỬA PAYLOAD ---
-    const payload = {
-      contents: [
-        {
-          parts: [
-            {
-              // Gửi cả Context (lấy từ DB) và Câu hỏi (Prompt)
-              text: `Context sản phẩm từ database:\n${contextText}\n\nCâu hỏi của người dùng:\n${prompt}`,
-            },
-          ],
-        },
-      ],
-      // --- 4. TẮT GOOGLE SEARCH (Giữ nguyên) ---
-
-      // Gửi hướng dẫn hệ thống
-      systemInstruction: {
-        parts: [{ text: systemPrompt }],
-      },
-    };
-    // --- KẾT THÚC SỬA PAYLOAD ---
-
-    // Thực hiện gọi API đến Gemini
-    const apiResponse = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!apiResponse.ok) {
-      const errorData = await apiResponse.text();
-      console.error("Gemini API Error:", errorData);
-      throw new Error(
-        `Gemini API request failed with status ${apiResponse.status}`
-      );
+        if (!rawQuery || rawQuery === "{}" || rawQuery.includes("Error")) {
+            isGeneralChat = true;
+        } else {
+            const mongoQuery = JSON.parse(rawQuery);
+            dbResults = await Product.find(mongoQuery).limit(5).lean();
+            if (dbResults.length === 0) isGeneralChat = false; // Vẫn để AI xử lý khi không có KQ
+        }
+    } catch (e) {
+        isGeneralChat = true;
     }
 
-    const result = await apiResponse.json();
+    // --- BƯỚC 3: TẠO CÂU TRẢ LỜI CUỐI CÙNG VỚI FORMAT ĐẸP ---
+    let finalSystemPrompt = "";
 
-    // Lấy câu trả lời (text) từ AI
-    const candidate = result.candidates?.[0];
-    const text = candidate?.content?.parts?.[0]?.text;
-
-    if (text) {
-      res.json({ reply: text }); // Trả về câu trả lời cho Frontend
+    if (isGeneralChat && dbResults.length === 0 && !rawQuery.includes("{")) {
+        finalSystemPrompt = `
+        Bạn là trợ lý ảo LapTech Assistant. Hãy trả lời câu hỏi xã giao này: "${prompt}".
+        Hãy giữ phong thái chuyên nghiệp và thân thiện của một cửa hàng công nghệ.
+        `;
     } else {
-      console.error(
-        "No text response from Gemini:",
-        JSON.stringify(result, null, 2)
-      );
-      res.status(500).json({ message: "AI không thể tạo câu trả lời." });
+        const resultString = dbResults.length > 0
+            ? JSON.stringify(dbResults.map(p => ({
+                name: p.name,
+                brand: p.brand,
+                price: p.price.toLocaleString('vi-VN') + ' ₫',
+                desc: p.description,
+                stock: p.countInStock
+              })))
+            : "KHÔNG TÌM THẤY SẢN PHẨM NÀO.";
+
+        finalSystemPrompt = `
+        Bạn là chuyên gia tư vấn bán hàng tại LapTechShop.
+        Dựa trên dữ liệu sau: ${resultString}
+
+        Hãy trả lời khách hàng về câu hỏi: "${prompt}" theo định dạng sau:
+        1. Mở đầu thân thiện.
+        2. Mỗi sản phẩm trình bày theo format:
+           ### 💻 [Tên sản phẩm]
+           * **Giá bán:** [Giá]
+           * **Thương hiệu:** [Hãng]
+           * **Cấu hình:** [Mô tả]
+           * **Tình trạng:** [Còn hàng/Hết hàng]
+        3. Dùng đường kẻ ngang "---" để ngăn cách GIỮA các sản phẩm.
+        4. Kết luận chuyên nghiệp.
+
+        Lưu ý: Nếu không thấy sản phẩm, hãy xin lỗi và gợi ý khách tìm từ khóa khác.
+        `;
     }
+
+    const finalReply = await callGemini(finalSystemPrompt);
+    res.json({ reply: finalReply });
+
   } catch (error) {
-    console.error("Error in chatWithAI:", error);
-    res.status(500).json({ message: "Lỗi máy chủ khi kết nối với AI." });
+    console.error("System Error:", error);
+    res.status(500).json({ message: "Hệ thống đang bận, vui lòng thử lại sau." });
   }
 };
 
